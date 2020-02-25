@@ -31,7 +31,6 @@ module.exports = {
               ["/tutorial/event/receiver", "事件接收器"]
             ]
           },
-          ['数据模型的使用']
         ]
       }
     ]
