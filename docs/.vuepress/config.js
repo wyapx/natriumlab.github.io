@@ -1,7 +1,6 @@
 module.exports = {
   title: "Mirai Framework for Python",
   description: "a framework for mirai, a powerful headless qq(oicq) client.",
-  base: "/mirai-py/",
   head: [],
   themeConfig: {
     nav: [{

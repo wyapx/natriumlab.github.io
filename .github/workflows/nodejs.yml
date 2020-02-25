@@ -17,5 +17,4 @@ jobs:
         BASE_BRANCH: dev
         BRANCH: master
         FOLDER: docs/.vuepress/dist
-        TARGET_FOLDER: ./mirai-py
         BUILD_SCRIPT: npm i -g vuepress && npm install && vuepress build docs
