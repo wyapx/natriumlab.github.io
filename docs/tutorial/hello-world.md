@@ -13,6 +13,17 @@
 我建议你先按照Mirai的[文档](https://github.com/mamoe/mirai/tree/master/mirai-console)启动一个 
 `mirai-console` 实例, 然后按照其输出进行操作即可
 
+### 成功依照其指示启动后
+在 `mirai-console.jar` 同级目录下会有一个 `mirai.properties` 文件, 打开这个文件, 大概是这样的:
+
+``` properties
+HTTP_API_PORT = 8080
+HTTP_API_AUTH_KEY = "xxxxxxxxxxxxxxxxxxx"
+HTTP_API_ENABLE = true
+```
+
+将 `HTTP_API_AUTH_KEY` 和 `HTTP_API_PORT` 这两个字段的值记住, 接下来要用到
+
 ## 安装 python-mirai
 
 ::: warning
@@ -52,12 +63,10 @@ $ python setup.py install
 代码实现最简单的机器人如下所示, 我们使用了 `typing` 来使 `type hint` 运行以获得更好的开发体验.  
 在这里我们将假设你已经配置好了 `mirai-console` 及 `mirai-http-api`, 同时将一些关键信息设置为如下形式:
 
-``` json
-{
-    "http-locate": "localhost:8080",
-    "authKey": "this-is-a-authkey",
-    "qq": 183213564
-}
+``` yml
+http-locate: "localhost:8080" # 这里是表示 mirai-console 自带的 mirai-http-api 所启动的服务的地址, 不需要什么 "http://" 之类的
+authKey: "this-is-a-authkey" # 字段 "HTTP_API_AUTH_KEY" 的值
+qq: 183213564 # 你登录 mirai-console 用的QQ
 ```
 
 这是一段代码样例, 当有用户私聊机器人时, 会向其发送一条 `"Hello, world!"`.

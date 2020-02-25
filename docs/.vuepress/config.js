@@ -19,7 +19,7 @@ module.exports = {
     sidebar: [
       ["/hello-mirai", '向 Mirai 道个好'],
       {
-        title: "基础教程",
+        title: "教程",
         children: [
           ["/tutorial/hello-world", "Hello, world!"],
           ["/tutorial/components", "认识消息组件"],
@@ -27,9 +27,11 @@ module.exports = {
           {
             title: "事件",
             children: [
-              ["/tutorial/event/hello-event", "初识事件"]
+              ["/tutorial/event/hello-event", "初识事件"],
+              ["/tutorial/event/receiver", "事件接收器"]
             ]
-          }
+          },
+          ['数据模型的使用']
         ]
       }
     ]

@@ -76,3 +76,14 @@ from mirai import (
 )
 ```
 :::
+
+## 提供运行条件
+`Session.receiver` 还支持第二个参数, 前面我们已经了解到了:
+
+> 当事件注册把一个 `Callable[[Union[MessageContext, EventContext]], bool]` 作为第二个参数传入时,
+> 在 `event_runner` 内会先执行该 `Callable`, 并根据其返回值判断是否执行事件运行主体.
+
+这个当时我们称其为 `事件上下文(Event Context)`, 但这只是事件上下文的一部分, 表述并不准确.  
+
+你需要通过传入 `lambda 表达式` 的方式定义第二个参数. 建议你需要判定多个条件时使用内置函数
+`any` 更加优雅的判定条件.
