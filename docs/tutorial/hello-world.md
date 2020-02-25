@@ -10,15 +10,14 @@
 
 ## 启动无头客户端
 由于 `python-mirai` 基于 `mirai-http-api` 实现, 所以若你想通过 `python-mirai` 编写机器人,
-我建议你先按照[Mirai的文档](https://github.com/mamoe/mirai/tree/master/mirai-console)启动一个 `MHC(Mirai Headless Client)` 的好
-
-然后按照其输出进行操作即可
+我建议你先按照Mirai的[文档](https://github.com/mamoe/mirai/tree/master/mirai-console)启动一个 
+`mirai-console` 实例, 然后按照其输出进行操作即可
 
 ## 安装 python-mirai
 
 ::: warning
 由于 `mirai` 现在处于快速流转状态, 建议你在其结束前尽量使用来自仓库的源代码安装,
-以免导致接口不兼容情况的发生.
+以免导致接口不兼容的情况的发生.
 :::
 
 ### 从 Pypi 安装
@@ -62,8 +61,9 @@ $ python setup.py install
 ```
 
 这是一段代码样例, 当有用户私聊机器人时, 会向其发送一条 `"Hello, world!"`.
-出于便于任何人理解的目的, 我会带着你一一解析我们提供的 API .
+出于使任何人理解的目的, 我会带着你一一解析我们提供的 API .
 
+首先, 给出一段 `Hello, world!` 代码:
 ``` python
 import asyncio
 from mirai import Session, Plain
@@ -96,8 +96,8 @@ except KeyboardInterrupt:
 </panel-view>
 
 ### 发生了什么?
-我们会分几个章节来说明一个 `Hello, world` 实例, 这里我们先介绍下 `Session`.
-一个 `Session` 实例将负责从无头客户端处获取消息/事件, 并负责协调与执行事件.
+我们会分几个章节来说明一个 `Hello, world` 实例, 这里我们先介绍下 `Session`.  
+ `Session` 实例负责从无头客户端处获取消息/事件, 同时负责协调与执行事件.
 
 首先, 我们从第`8`行开始解析.
 ``` python
@@ -110,7 +110,7 @@ Session(f"mirai://localhost:8080/?authKey={authKey}&qq={qq}")
 ```
 
 你可以很清晰的看出, 我们使用了一个 URL 实例化了一个 `Session` 对象, 这是推荐的做法.  
-如果你需要传入具名形参, 需要使用类似 `host`, `port`, `qq` 之类的字段, 也是可以的:
+如果你需要传入具名参数, 需要使用类似 `host`, `port`, `qq` 之类的字段, 也是可以的:
 
 ``` python
 Session(host="localhost", port="8080", authKey=authKey, qq=qq)

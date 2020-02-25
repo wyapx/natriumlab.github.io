@@ -15,13 +15,13 @@ await context.session.sendFriendMessage(
 注意第三行, 我们使用一个字符串 `"Hello, world!"` 作为具名实参 `text` 传入到了 `Plain` 中,
 并实例化了一个 `List[Plain]` 对象.  
 而当我们发出任意私聊消息时, 机器人会发出 `"Hello, world!"` 的消息.  
-而当我们将其改为这样:
+如果我们将其改为这样:
 
 ```python
 [Plain(text="Hello,"), Plain(text="world"), Plain(text="!")]
 ```
 
-当我们也如之前一样发出任意私聊消息时:
+若此时, 我们也如之前一样发出任意私聊消息时:
 
 <panel-view title="聊天记录">
 <chat-message nickname="Alice" color="#cc0066">随便打个招呼吧.</chat-message>
@@ -57,7 +57,8 @@ await context.session.sendFriendMessage(
 
 我们不会创造什么 `Mirai码`, 过去没有, 现在没有, 将来也不会有.  
 出于方便和可用性考虑, 我们并不会去专门设计自己的表现特殊数据的方式,
-相反, 我们使用类似 [`JSON Schema`](https://json-schema.org/) 的方式表现数据.  
+相反, 我们使用类似 [`JSON Schema`](https://json-schema.org/) 的方式表现数据.
+
 而这种方式对应用的表达性是有很大提高的:
 
 ``` python
@@ -110,7 +111,7 @@ await context.session.sendGroupMessage(
 ```
 
 ## 图片的发送方式
-我们强烈建议你使用 `Image.fromFileSystem` 异步方法来上传本地图片:
+我们强烈建议你使用 `Image.fromFileSystem` 工厂方法来上传本地图片:
 
 ``` python
 [
