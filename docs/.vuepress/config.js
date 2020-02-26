@@ -20,6 +20,7 @@ module.exports = {
       ["/hello-mirai", '向 Mirai 道个好'],
       {
         title: "教程",
+        collapsable: false,
         children: [
           ["/tutorial/hello-world", "Hello, world!"],
           ["/tutorial/components", "认识消息组件"],

@@ -120,6 +120,12 @@
     - `target: int`: 群组的群号
  - 返回值: `List[Member]`
 
+### 获取特定群组的成员数量
+**Coroutine** `Session.groupMemberNumber`
+ - 参数列表:
+    - `target: int`: 群组的群号
+ - 返回值: `int`
+
 ### 从已缓存的群组列表中获取 Group 对象
 `Session.getGroup`
  - 参数列表:
@@ -156,3 +162,123 @@
  - 参数列表: 不需要传入参数
  - 返回值: `List[Friend]`
 
+## 群管理
+::: warning
+此部分的绝大多数内容需要机器人账号具有管理员甚至群主级的权限,
+若你的程序抛出 `PermissionError`, 请先检查机器人账号的权限,
+若仍存在该问题, 请在主项目 `python-mirai` 处新增一个 ISSUE.
+:::
+
+### 全体禁言
+**Coroutine** `Session.muteAll`
+ - 描述: 在指定群组处启用全体禁言
+ - 参数列表:
+    - `target: int`: 要操作的群号
+ - 返回值: 返回值无意义(`bool`)
+ - 权限限制:
+    - 管理员(`Permission.Administrator`)
+    - 群主(`Permission.Owner`)
+
+### 取消全体禁言
+**Coroutine** `Session.unmuteAll`
+ - 描述: 在指定群组处启用全体禁言
+ - 参数列表:
+    - `target: int`: 要操作的群号
+ - 返回值: 返回值无意义(`bool`)
+ - 权限限制:
+    - 管理员(`Permission.Administrator`)
+    - 群主(`Permission.Owner`)
+
+### 获取群员信息
+**Coroutine** `Session.memberInfo`
+ - 描述: 获取指定群组内指定群员的信息
+ - 参数列表:
+    - `group: Union[Group, int]`: 指定群组
+    - `member: Union[Member, int]`: 指定群员
+ - 返回值: `MemberChangeableSetting`
+ - 权限限制: 无
+
+### 修改群员信息
+**Coroutine** `Session.changeMemberInfo`
+ - 描述: 修改群成员的信息(特殊头衔, 群名片)
+ - 参数列表:
+    - `group: Union[Group, int]`: 目标群组
+    - `member: Union[Member, int]`: 目标成员
+    - `info: MemberChangeableSetting`: 要加以修改的设置
+ - 返回值: 返回值无意义(`bool`)
+ - 权限限制:
+    - 管理员(`Permission.Administrator`): 仅能更改群名片
+    - 群主(`Permission.Owner`): 可设置特殊头衔与群名片
+ - 温馨提示: 因为 pydantic 无法不将值为 `null` 的键忽略,
+ 所以请先使用获取群员信息的接口, 并通过 `MemberChangeableSetting.modify` 更改其属性再提交.
+
+### 获取机器人的群成员信息
+**Coroutine** `Session.botMemberInfo`
+ - 描述: 获取机器人账号在目标群的成员信息
+ - 参数列表:
+    - `group: Union[Group, int]`: 目标群组
+ - 返回值: `MemberChangeableSetting`
+
+### 获取群设置
+**Coroutine** `Session.groupConfig`
+ - 描述: 获取指定群的设置
+ - 参数列表:
+    - `group: Union[Group, int]`: 目标群组
+ - 返回值: `GroupSetting`
+
+### 修改群设置
+**Coroutine** `Session.changeGroupConfig`
+ - 描述: 修改群成员的信息(特殊头衔, 群名片)
+ - 参数列表:
+    - `group: Union[Group, int]`: 目标群组
+    - `config: GroupSetting`: 要加以修改的设置
+ - 返回值: 返回值无意义(`bool`)
+ - 权限限制:
+    - 管理员(`Permission.Administrator`)
+    - 群主(`Permission.Owner`)
+ - 温馨提示: 因为 pydantic 无法不将值为 `null` 的键忽略,
+ 所以请先使用获取群设置的接口, 并通过 `GroupSetting.modify` 更改其属性再提交.
+
+### 禁言群成员
+**Coroutine** `Session.mute`
+ - 描述: 禁言群成员
+ - 参数列表:
+    - `group: Union[Group, int]`: 目标群组
+    - `member: Union[Member, int]`: 目标成员
+    - `time: Union[timedelta, int]`: 禁言时长
+ - 返回值: 返回值无意义(`bool`)
+ - 权限限制:
+    - 管理员(`Permission.Administrator`)
+    - 群主(`Permission.Owner`)
+ - 温馨提示: 
+    - 由于客观原因, 你只能设置参数 `time` 为一个
+      "所直接表现值小于 30 天 并且大于 1 分钟的值",
+      若其直接表现值大于 30 天, 将只会禁言该成员 30 天,
+      若其直接表现值小于 1 分钟, 将只会禁言该成员 1 分钟.
+    - 由于客观原因, 导致管理员**无法**禁言群主, 此时会抛出 `PermissionError`, 请注意.
+
+### 取消禁言
+**Coroutine** `Session.unmute`
+ - 描述: 取消之前对指定群成员的禁言
+ - 参数列表:
+    - `group: Union[Group, int]`: 目标群组
+    - `member: Union[Member, int]`: 目标成员
+ - 返回值: 返回值无意义(`bool`)
+ - 权限限制:
+    - 管理员(`Permission.Administrator`)
+    - 群主(`Permission.Owner`)
+ - 温馨提示:
+    - 由于客观原因, 导致**无法**解禁由群主禁言的管理员, 此时会抛出 `PermissionError`, 请注意.
+
+### 将成员从群组中删除
+**Coroutine** `Session.kick`
+ - 描述: 将指定群成员从群组中删除
+ - 参数列表:
+    - `group: Union[Group, int]`: 目标群组
+    - `member: Union[Member, int]`: 目标成员
+ - 返回值: 返回值无意义(`bool`)
+ - 权限限制:
+    - 管理员(`Permission.Administrator`)
+    - 群主(`Permission.Owner`)
+ - 温馨提示:
+    - 由于客观原因, 导致管理员**无法踢出**其他管理员及群主, 此时会抛出 `PermissionError`, 请注意.
