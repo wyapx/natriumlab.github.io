@@ -31,6 +31,7 @@ module.exports = {
               ["/tutorial/event/receiver", "事件接收器"],
             ]
           },
+          ["/tutorial/exception.md", "错误处理"],
           ["/tutorial/session/see-session-again", "又见 Session"]
         ]
       }
