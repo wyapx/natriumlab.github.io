@@ -28,9 +28,10 @@ module.exports = {
             title: "事件",
             children: [
               ["/tutorial/event/hello-event", "初识事件"],
-              ["/tutorial/event/receiver", "事件接收器"]
+              ["/tutorial/event/receiver", "事件接收器"],
             ]
           },
+          ["/tutorial/session/see-session-again", "又见 Session"]
         ]
       }
     ]
