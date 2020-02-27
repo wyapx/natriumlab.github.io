@@ -29,7 +29,7 @@
        - `<? extend BaseMessageComponent>`
        - `List[<? extend BaseMessageComponent>]`
        - `str`
-   - `quoteSource: Optional[Source, int]`: 指定回复的消息
+   - `quoteSource: Optional[Union[Source, int]]`: 指定回复的消息
  - 返回值: `BotMessage`(`mirai.message.types.BotMessage`)
  - 可能抛出的错误:
    - `ValueError`: 没有找到目标群, 无法发送
@@ -209,6 +209,7 @@
  - 权限限制:
     - 管理员(`Permission.Administrator`): 仅能更改群名片
     - 群主(`Permission.Owner`): 可设置特殊头衔与群名片
+    - 修改自身: 仅能更改群名片
  - 温馨提示: 因为 pydantic 无法不将值为 `null` 的键忽略,
  所以请先使用获取群员信息的接口, 并通过 `MemberChangeableSetting.modify` 更改其属性再提交.
 
@@ -252,10 +253,10 @@
     - 群主(`Permission.Owner`)
  - 温馨提示: 
     - 由于客观原因, 你只能设置参数 `time` 为一个
-      "所直接表现值小于 30 天 并且大于 1 分钟的值",
-      若其直接表现值大于 30 天, 将只会禁言该成员 30 天,
+      "所直接表现值小于 30 天 并且大于 1 分钟的值",  
+      若其直接表现值大于 30 天, 将只会禁言该成员 30 天,  
       若其直接表现值小于 1 分钟, 将只会禁言该成员 1 分钟.
-    - 由于客观原因, 导致管理员**无法**禁言群主, 此时会抛出 `PermissionError`, 请注意.
+    - 由于客观原因, 导致管理员**无法禁言**群主及其他管理员, 此时会抛出 `PermissionError`, 请注意.
 
 ### 取消禁言
 **Coroutine** `Session.unmute`
@@ -268,7 +269,7 @@
     - 管理员(`Permission.Administrator`)
     - 群主(`Permission.Owner`)
  - 温馨提示:
-    - 由于客观原因, 导致**无法**解禁由群主禁言的管理员, 此时会抛出 `PermissionError`, 请注意.
+    - 由于客观原因, 导致管理员**无法解禁**由群主禁言的管理员或是自己, 此时会抛出 `PermissionError`, 请注意.
 
 ### 将成员从群组中删除
 **Coroutine** `Session.kick`

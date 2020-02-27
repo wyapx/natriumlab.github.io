@@ -35,6 +35,13 @@ module.exports = {
           ["/tutorial/exception.md", "错误处理"],
           ["/tutorial/session/see-session-again", "又见 Session"]
         ]
+      },
+      {
+        title: "进阶",
+        collapsable: false,
+        children: [
+          ['/advanced/use-get_tasks', '使用 Session.get_tasks']
+        ]
       }
     ]
   },
