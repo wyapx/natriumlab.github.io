@@ -75,7 +75,7 @@ qq: 183213564 # 你登录 mirai-console 用的QQ
 首先, 给出一段 `Hello, world!` 代码:
 ``` python
 import asyncio
-from mirai import Session, Plain
+from mirai import Session, Plain, Friend
 
 authKey = "this-is-a-authkey"
 qq = 183213564
@@ -83,9 +83,9 @@ qq = 183213564
 async def main():
     async with Session(f"mirai://localhost:8080/?authKey={authKey}&qq={qq}") as session:
         @session.receiver("FriendMessage")
-        async def event_friendmessage(context):
-            await context.session.sendFriendMessage(
-                context.message.sender.id,
+        async def event_friendmessage(session: Session, sender: Friend):
+            await session.sendFriendMessage(
+                sender.id,
                 [Plain(text="Hello, world!")]
             )
 
@@ -154,12 +154,13 @@ Session(host="localhost", port="8080", authKey=authKey, qq=qq)
 
 ``` python
 @session.receiver("FriendMessage", lambda c: c.message.sender.id == 133454534)
-async def event_friendmessage(context):
-    await context.session.sendFriendMessage(
-        context.message.sender.id,
+async def event_friendmessage(session: Session, sender: Friend):
+    await session.sendFriendMessage(
+        sender.id,
         [Plain(text="Hello, world!")]
     )
 ```
 
 当事件注册把一个 `Callable[[Union[MessageContext, EventContext]], bool]` 作为第二个参数传入时,
-在 `event_runner` 内会先执行该 `Callable`, 并根据其返回值判断是否执行事件运行主体.
+在 `event_runner` 内会先传入 `InternalEvent.body` 执行该 `Callable`,
+并根据其返回值判断是否执行事件运行主体.

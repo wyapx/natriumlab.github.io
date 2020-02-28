@@ -22,7 +22,7 @@
 
 当事件被传达时, `event_runner` 会实例化一个 `EventContextBody`(`mirai.prototypes.context.EventContextBody`)
 对象, 设置上下文对象 `EventContext`(`mirai.context.event` 或者 `mirai.Direct.Event`), 
-并传入事件运行主体运行.
+并使用 `annotations` 特性将参数传入事件运行主体运行.
 
 这里是一个监听事件 `"MemberJoinEvent"` 的实例.
 ``` python
@@ -34,13 +34,12 @@ from mirai import (
 ...
 
 @session.receiver("MemberJoinEvent")
-async def member_join(context: EventContextBody):
-    context.event: MemberJoinEvent
+async def member_join(event: MemberJoinEvent, session: Session):
 
-    await context.session.sendGroupMessage(
-        context.event.member.group.id,
+    await session.sendGroupMessage(
+        event.member.group.id,
         [
-            At(target=context.event.member.id),
+            At(target=event.member.id),
             Plain(text="欢迎进群!")
         ]
     )
@@ -51,15 +50,9 @@ async def member_join(context: EventContextBody):
 运行这段代码, 当有新成员加入有该机器人的群时, 机器人会发送一条欢迎消息.
 
 ## 关于类型推断
-因为就算将 `context` 加上了 `EventContextBody` 的定义,
-由于其内部设置的是各个事件的基类 `ExternalEvent`(`mirai.event.ExternalEvent`),
-所以导致类型推断无法正常工作, 此时只需要将 `context.event` 的类型推断重新定义为事件模型即可:
-
-``` python
-...
-context.event: MemberJoinEvent
-...
-```
+在之前的版本中, 由于直接传入上下文对象, 导致编辑器的类型推断无法工作.  
+而在最近更新的版本中, 因为使用了 `annotations` 的特性,
+你可以使用更加优雅的方式处理事件了.
 
 ::: tip
 所有的事件模型都在包 `mirai.event.external` 内被定义, 同时被公开到 `mirai` 下, 你可以直接导入:
@@ -81,9 +74,8 @@ from mirai import (
 `Session.receiver` 还支持第二个参数, 前面我们已经了解到了:
 
 > 当事件注册把一个 `Callable[[Union[MessageContext, EventContext]], bool]` 作为第二个参数传入时,
-> 在 `event_runner` 内会先执行该 `Callable`, 并根据其返回值判断是否执行事件运行主体.
+> 在 `event_runner` 内会先传入 `InternalEvent.body` 执行该 `Callable`,
+> 并根据其返回值判断是否执行事件运行主体.
 
-这个当时我们称其为 `事件上下文(Event Context)`, 但这只是事件上下文的一部分, 表述并不准确.  
-
-你需要通过传入 `lambda 表达式` 的方式定义第二个参数. 建议你需要判定多个条件时使用内置函数
-`any` 更加优雅的判定条件.
+你需要通过传入 `lambda 表达式` 的方式定义第二个参数.  
+建议你需要判定多个条件时使用内置函数 `any` 更加优雅的判定条件.

@@ -16,20 +16,17 @@
 
 ``` python
 @session.receiver("GroupMessage")
-async def event_gm(context):
+async def event_gm():
     ...
 
 @session.receiver("GroupMessage", lambda i: i.message.sender.group.id == 123456789)
-async def another_event_gm(context):
+async def another_event_gm():
     ...
 ```
 
 ### 事件的多种监听方式
 是的, 你不仅可以使用字符串表达出你想监听的事件, 还可以用另外两种方式:
- - 传入事件模型, 全部的事件模型在 `mirai.event.external` 处被定义
- - 传入一个 `Enum Value`, 这意味着你可以通过遍历一个枚举类的方式来批量注册事件监听
+ - 传入事件模型, 全部的事件模型在 `mirai.event.external` 处被定义, 也可以直接从 `mirai` 下导入, 这是推荐的做法.
+ - 传入一个 `Enum Value`, 这意味着你可以通过遍历一个枚举类的方式来批量注册事件监听.
 
-不过我们并不推荐使用这两种方式
-
-### 为什么?
-你无法从其获得类型推断支持, 并且这还会使你的 `import` 列表变得混乱, 在某些情况下甚至会导致程序无法启动.
+如果你对光秃秃的字符串感到畏惧, 你可以尝试下使用这两种方式.

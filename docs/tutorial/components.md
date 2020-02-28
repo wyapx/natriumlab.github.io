@@ -6,8 +6,8 @@
 回到一开始的 `Hello, world` 实例中去, 我们会发现, 当我们发送消息时, 需要使用这样一个格式:
 
 ``` python
-await context.session.sendFriendMessage(
-    context.message.sender.id,
+await session.sendFriendMessage(
+    sender.id,
     [Plain(text="Hello, world!")]
 )
 ```
@@ -18,7 +18,7 @@ await context.session.sendFriendMessage(
 如果我们将其改为这样:
 
 ```python
-[Plain(text="Hello,"), Plain(text="world"), Plain(text="!")]
+[Plain(text="Hello, "), Plain(text="world"), Plain(text="!")]
 ```
 
 若此时, 我们也如之前一样发出任意私聊消息时:
@@ -101,10 +101,10 @@ Plain(text="?")
 在发送消息时, 我们推荐使用列表的形式组合消息组件:
 
 ``` python
-await context.session.sendGroupMessage(
-    context.sender.group.id,
+await session.sendGroupMessage(
+    sender.group.id,
     [
-        At(target=context.sender.id),
+        At(target=sender.id),
         Plain(text="!")
     ]
 )

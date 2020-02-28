@@ -25,18 +25,15 @@
 :::
 
 ### 所以这玩意咋用?
-`event_runner` 在运行事件运行主体时, 会将当前上下文传入到第一个参数内.
+`event_runner` 在运行事件运行主体时,
+会将当前上下文依据事件运行主体的 [`annotations`](https://www.python.org/dev/peps/pep-3107/) 传入上下文项.
 
 还是以 `Hello, world` 作为范例:
 ``` python
-@session.receiver("FriendMessage", lambda c: c.message.sender.id == 133454534)
-async def event_friendmessage(context):
-    # context 即是当前事件运行主体的上下文对象, 每个事件独有一份.
-    # 顺便, 一个事件发生所需要的条件也可以算作上下文, 即上面定义的 lambda.
-    # 如果你的IDE/编辑器看起来对 context 对象没有反应, 则可以考虑使用type hint.
-    # 如: FriendMessage 会实例化一个 mirai.prototypes.context.MessageContextBody 对象,
-    #     那么你就可以使用 context: mirai.prototypes.context.MessageContextBody 替换上面的
-    #     context, 我想你的编辑器就不会傻眼了.
+@session.receiver("FriendMessage")
+async def event_friendmessage(session: Session, sender: Friend):
+    # 像上面的 session, sender 即是当前事件运行主体的上下文项对象, 每个事件独有一份.
+    # 因为最新版本使用了 annotations 这个特性, 所以你的 IDE/编辑器 可以非常轻松的完成它的任务.
     await context.session.sendFriendMessage(
         context.message.sender.id,
         [Plain(text="Hello, world!")]
@@ -59,15 +56,15 @@ def is_startwith(string):
 
 ``` python
 # file: main.py
-import mirai
+from mirai import Plain, Session, Member, Group
 
 from context_test import is_startwith
 ...
 @session.receiver("GroupMessage")
-async def handler(context):
+async def handler(session: Session, group: Group):
     if is_startwith("/"):
-        await context.session.sendGroupMessage(
-            context.message.sender.group.id,
+        await session.sendGroupMessage(
+            group.id,
             [Plain(text="嗯?你刚才以斜杠开头写了什么啊")]
         )
 ...
@@ -85,4 +82,9 @@ async def handler(context):
 
 上下文系统有利于降低应用各个模块间的耦合, 并使数据的调用更加流畅,
 而模块提供的方法也变得更加易用.
-~~顺便一提, 直接传入的实参 `context` 看起来没啥用, 实际上也真的没啥用...~~
+
+::: tip
+注意, 我们目前只对事件运行主体使用 `annotations` 特性,
+当外部函数要使用上下文对象时, 还是需要使用 `mirai.Direct` 对象!
+~~当以后整出依赖注入就不用了~~
+:::
