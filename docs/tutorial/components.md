@@ -115,10 +115,14 @@ await session.sendGroupMessage(
 
 ``` python
 [
-    await Image.fromFileSystem("./image.png"),
+    await Image.fromFileSystem("./image.png", "group"),
     Plain(text="这张图片发给你了!")
 ]
 ```
+
+::: warning
+注意: 你需要判断你发的图片的类型是 `group`(群组图片) 还是 `friend`(好友图片)
+:::
 
 此外, 你可以直接使用 `context.message.messageChain` 对象的
 `getFirstComponent` 方法获取消息中的第一张图片, 也可以使用

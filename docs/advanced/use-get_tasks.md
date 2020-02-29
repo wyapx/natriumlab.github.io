@@ -34,17 +34,12 @@ async def main():
 asyncio.run(main())
 ```
 
-然后使用 `Session.get_tasks` 和 `Session.shared_lock`:
+然后使用 `Session.get_tasks` 和 `Session.enable_session`:
 
 ``` python
-with session.shared_lock:
-    await session.get_tasks()
+await Session.enable_session()
+await session.get_tasks()
 ```
-
-::: tip
-为什么需要 `Session.shared_lock` ?  
-因为 `Session.close_session` 使用其确保在短轮询协程和 `event_runner` 结束后才释放 `sessionKey`.
-:::
 
 与之前的区别在于: 我们使用了运行在主线程的事件循环启动了短轮询协程和 `event_runner`,
 这种方式便于与现有的系统一起运作, 具有低侵入性.  
