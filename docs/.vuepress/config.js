@@ -34,7 +34,16 @@ module.exports = {
             ]
           },
           ["/tutorial/exception.md", "错误处理"],
-          ["/tutorial/session/see-session-again", "又见 Session"]
+          ["/tutorial/session/see-session-again", "又见 Session"],
+          {
+            title: "依赖注入",
+            children: [
+              ["/tutorial/dependencies/", "初识依赖注入"],
+              ["/tutorial/dependencies/dependencies-in-receiver", "不受参依赖项"],
+              ["/tutorial/dependencies/class-closure-as-depend", "定制化需求"]
+            ]
+          },
+          ['/tutorial/middlewaire', "中间件"]
         ]
       },
       {
