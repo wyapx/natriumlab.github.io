@@ -22,6 +22,13 @@ module.exports = {
         title: "教程",
         collapsable: false,
         children: [
+          {
+            title: "搭建开发环境",
+            collapsable: false,
+            children: [
+              ['/mirai/use-console.md', '使用 mirai-console']
+            ]
+          },
           ["/tutorial/hello-world", "Hello, world!"],
           ["/tutorial/components", "认识消息组件"],
           ["/tutorial/annotations", "类型注解(Annotations)"],
