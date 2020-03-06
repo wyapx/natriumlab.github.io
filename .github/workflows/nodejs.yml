@@ -22,3 +22,4 @@ jobs:
         cname: mirai-py.originpages.com
         publish_dir: ./docs/.vuepress/dist
         commit_message: ${{ github.event.head_commit.message }}
+        publish_branch: master
