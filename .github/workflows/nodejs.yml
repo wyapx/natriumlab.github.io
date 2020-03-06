@@ -10,7 +10,7 @@ jobs:
     - name: Checkout
       uses: actions/checkout@master
     
-    - run: sudo npm install -g veupress
+    - run: sudo npm install -g vuepress
     - run: sudo npm install
     - run: sudo npm install vue-loader
     - run: sudo npm run dist
