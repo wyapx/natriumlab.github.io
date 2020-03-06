@@ -95,6 +95,8 @@ async def event_gm(app: Mirai, message: MessageChain, group: Group):
             Plain(text="Hello, world!")
         ])
 
+if __name__ == "__main__":
+    app.run()
 
 ```
 
