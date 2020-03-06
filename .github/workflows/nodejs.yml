@@ -11,7 +11,7 @@ jobs:
       uses: actions/checkout@master
 
     - name: Build
-    - run: |
+      run: |
         npm i -g vuepress
         npm install
         vuepress build docs
