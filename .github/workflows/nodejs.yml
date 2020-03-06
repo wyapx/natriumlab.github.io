@@ -10,11 +10,16 @@ jobs:
     - name: Checkout
       uses: actions/checkout@master
 
-    - name: Build and Deploy
-      uses: JamesIves/github-pages-deploy-action@master
-      env:
-        ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-        BASE_BRANCH: dev
-        BRANCH: master
-        FOLDER: docs/.vuepress/dist
-        BUILD_SCRIPT: npm i -g vuepress && npm install && vuepress build docs
+    - name: Build
+    - run: |
+        npm i -g vuepress
+        npm install
+        vuepress build docs
+
+    - name: Deploy
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        personal_token: ${{ secrets.ACCESS_TOKEN }}
+        cname: mirai-py.originpages.com
+        publish_dir: ./docs/.vuepress/dist
+        commit_message: ${{ github.event.head_commit.message }}
