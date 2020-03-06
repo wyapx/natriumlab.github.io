@@ -72,6 +72,11 @@ qq: 183213564 # 你登录 mirai-console 用的QQ
 这是一段代码样例, 当有用户私聊机器人时, 会向其发送一条 `"Hello, world!"`.
 出于使任何人理解的目的, 我会带着你一一解析我们提供的 API .
 
+::: warning
+由于[客观原因](https://github.com/mamoe/mirai/issues/115), 导致目前 `FriendMessage` 的事件监听无法使用...  
+我们会尽力给出解决方案.
+:::
+
 首先, 给出一段 `Hello, world!` 代码:
 ``` python
 import asyncio
