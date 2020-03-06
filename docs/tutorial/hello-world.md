@@ -1,9 +1,3 @@
----
-{
-    "next": "/tutorial/context"
-}
----
-
 # Hello World
 
 [[toc]]
