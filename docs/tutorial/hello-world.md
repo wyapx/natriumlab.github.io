@@ -60,7 +60,7 @@ $ python setup.py install
 :::
 
 ## Hello, world!
-代码实现最简单的机器人如下所示, 我们使用了 `typing` 来使 `type hint` 运行以获得更好的开发体验.  
+代码实现最简单的机器人如下所示, 我们使用了标准库 `typing` 以获得更好的开发体验.  
 在这里我们将假设你已经配置好了 `mirai-console` 及 `mirai-http-api`, 同时将一些关键信息设置为如下形式:
 
 ``` yml
@@ -73,9 +73,10 @@ qq: 183213564 # 你登录 mirai-console 用的QQ
 出于使任何人理解的目的, 我会带着你一一解析我们提供的 API .
 
 ::: warning
-由于[客观原因](https://github.com/mamoe/mirai/issues/115), 导致目前 `FriendMessage` 的事件监听无法使用...  
+由于[客观原因](https://github.com/mamoe/mirai/issues/108), 导致目前 `FriendMessage` 的事件监听无法使用...  
 我们会尽力给出解决方案.
 :::
+
 
 首先, 给出一段 `Hello, world!` 代码:
 ``` python
