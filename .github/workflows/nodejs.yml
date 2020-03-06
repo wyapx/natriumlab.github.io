@@ -10,12 +10,6 @@ jobs:
     - name: Checkout
       uses: actions/checkout@master
 
-    - name: Create CNAME
-      uses: finnp/create-file-action@master
-      env:
-        FILE_NAME: CNAME
-        FILE_DATA: mirai-py.originpages.com
-
     - name: Build and Deploy
       uses: JamesIves/github-pages-deploy-action@master
       env:
