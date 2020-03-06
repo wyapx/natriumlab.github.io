@@ -13,6 +13,10 @@
 ## 在 python-mirai 中的应用
 我们使用 Annotations 特性来给事件运行主体分发上下文项, 并基于其提供了附加功能.  
 
+::: tip
+`Application` 机制也支持使用 `Annotations` 特性, 具体的改变将在接下来讲解.
+:::
+
 ### 基本案例
 ``` python
 from mirai import (
@@ -34,7 +38,8 @@ async def FMHandler(session: Session, friend: Friend, message: FriendMessage):
 当你做好类型推断后, 只需要按照规则调用就好.
 
 可以作为注解项的类型(值):
- - `mirai.Session`: 会话本身.
+ - `mirai.Session`: 会话本身. **不能在 Applications 机制中使用!!!**
+ - `mirai.Mirai`: `Application` 的实例, 与 `mirai.Session` 同级. **只能在 Applications 机制中使用!!!**
  - `mirai.GroupMessage`: **只能在事件 GroupMessage 内使用**, GroupMessage实例.
  - `mirai.FriendMessage`: **只能在事件 FriendMessage 内使用**, FriendMessage实例.
  - `mirai.Source`: **只能在事件 FriendMessage, GroupMessage 内使用**, 消息的 `Source` 对象, 用于读取 `MessageID`.

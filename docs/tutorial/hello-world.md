@@ -4,19 +4,19 @@
 
 ## 启动无头客户端
 由于 `python-mirai` 基于 `mirai-http-api` 实现, 所以若你想通过 `python-mirai` 编写机器人,
-我建议你先按照Mirai的[文档](https://github.com/mamoe/mirai/tree/master/mirai-console)启动一个 
-`mirai-console` 实例, 然后按照其输出进行操作即可
+我建议你先按照Mirai的[文档](https://github.com/mamoe/mirai-console)启动一个 
+`mirai-console` 实例, 然后按照其输出进行操作即可.
 
 ### 成功依照其指示启动后
-在 `mirai-console.jar` 同级目录下会有一个 `mirai.properties` 文件, 打开这个文件, 大概是这样的:
+在 `mirai-console.jar` 同级目录下的文件夹 `plugins/MiraiAPIHTTP` 下,
+会有一个 `setting.yml` 文件, 文件内容可能如下:
 
-``` properties
-HTTP_API_PORT = 8080
-HTTP_API_AUTH_KEY = "xxxxxxxxxxxxxxxxxxx"
-HTTP_API_ENABLE = true
+``` yml
+APIKey: fafvasdfe4aht7iuklu
+port: 8080
 ```
 
-将 `HTTP_API_AUTH_KEY` 和 `HTTP_API_PORT` 这两个字段的值记住, 接下来要用到
+将字段 `APIKey` 和 `port` 的值记下, 然后下一步.
 
 ## 安装 python-mirai
 
@@ -55,49 +55,54 @@ $ python setup.py install
 
 ## Hello, world!
 代码实现最简单的机器人如下所示, 我们使用了标准库 `typing` 以获得更好的开发体验.  
-在这里我们将假设你已经配置好了 `mirai-console` 及 `mirai-http-api`, 同时将一些关键信息设置为如下形式:
-
-``` yml
-http-locate: "localhost:8080" # 这里是表示 mirai-console 自带的 mirai-http-api 所启动的服务的地址, 不需要什么 "http://" 之类的
-authKey: "this-is-a-authkey" # 字段 "HTTP_API_AUTH_KEY" 的值
-qq: 183213564 # 你登录 mirai-console 用的QQ
-```
+在这里我们将假设你已经配置好了 `mirai-console` 及 `mirai-http-api`,
+并获取到了必要的, 例如 `APIKey`, `port`, `qq` 等关键配置...嗯, 你还记得你用来登录的机器人的qq号吗?
+等下要用, 字段 `qq` 的值就是你用来登录的机器人的qq号.
 
 这是一段代码样例, 当有用户私聊机器人时, 会向其发送一条 `"Hello, world!"`.
 出于使任何人理解的目的, 我会带着你一一解析我们提供的 API .
 
 ::: warning
 由于[客观原因](https://github.com/mamoe/mirai/issues/108), 导致目前 `FriendMessage` 的事件监听无法使用...  
-我们会尽力给出解决方案.
+我们会尽力给出解决方案, 暂时的, 我们将只能使用 `GroupMessage`.
+:::
+
+::: tip
+由于本文档更新时, `python-mirai` 已经发布了 `0.2.1`,
+故我们将转为介绍 `Application`, 同时 `Session` 将作为 `addForeverTarget` 的备选方案.
 :::
 
 
 首先, 给出一段 `Hello, world!` 代码:
 ``` python
+from mirai import Mirai, Plain, MessageChain, Group
 import asyncio
-from mirai import Session, Plain, Friend
 
-authKey = "this-is-a-authkey"
-qq = 183213564
+from environment import (
+    qq, # 字段 qq 的值
+    authKey, # 字段 authKey 的值
+    mirai_api_http_locate # = f"{httpapi所在主机的IP, 需有效!}:{字段 port 的值}"
+)
+# 上面是把我们之前记住的各种信息导入到程序中来, 属于伪代码,
+# 请不要在真实环境中填入!!!!!!
 
-async def main():
-    async with Session(f"mirai://localhost:8080/?authKey={authKey}&qq={qq}") as session:
-        @session.receiver("FriendMessage")
-        async def event_friendmessage(session: Session, sender: Friend):
-            await session.sendFriendMessage(
-                sender.id,
-                [Plain(text="Hello, world!")]
-            )
+app = Mirai(f"mirai://{mirai_api_http_locate}/?authKey={authKey}&qq={qq}")
 
-        await session.joinMainThread()
+@app.receiver("GroupMessage")
+async def event_gm(app: Mirai, message: MessageChain, group: Group):
+    if message.toString().startswith("/image"):
+        await app.sendGroupMessage(group, [
+            Plain(text="Hello, world!")
+        ])
 
-try:
-    asyncio.run(main())
-except KeyboardInterrupt:
-    exit()
+
 ```
 
-在运行这段代码后, 私聊你的机器人, 她会发送一条消息:
+::: warning
+强烈建议你开一个测试机器人专用的群组, 否则你的机器人很可能会被其他人仇视!
+:::
+
+运行这段代码, 在某个群随便说一句话, 你的机器人就会发送一条消息:
 
 <panel-view title="聊天记录">
 <chat-message nickname="Alice" color="#cc0066">向这个世界问个好吧.</chat-message>
@@ -105,43 +110,39 @@ except KeyboardInterrupt:
 </panel-view>
 
 ### 发生了什么?
-我们会分几个章节来说明一个 `Hello, world` 实例, 这里我们先介绍下 `Session`.  
- `Session` 实例负责从无头客户端处获取消息/事件, 同时负责协调与执行事件.
+我们会分几个章节来说明一个 `Hello, world` 实例, 这里我们先介绍下 `Application` 机制.  
+ `Application` 实例负责从无头客户端处获取消息/事件, 同时负责协调与执行事件.
 
-首先, 我们从第`8`行开始解析.
+首先, 我们从定义了 `app` 的那行开始解析.
 ``` python
-async with Session(f"mirai://localhost:8080/?authKey={authKey}&qq={qq}") as session:
+Mirai(f"mirai://localhost:8080/?authKey={authKey}&qq={qq}")
 ```
 
-去除无关部分:
-``` python
-Session(f"mirai://localhost:8080/?authKey={authKey}&qq={qq}")
-```
-
-你可以很清晰的看出, 我们使用了一个 URL 实例化了一个 `Session` 对象, 这是推荐的做法.  
+你可以很清晰的看出, 我们使用了一个 URL 实例化了一个 `Mirai` 对象, 这是推荐的做法.  
 如果你需要传入具名参数, 需要使用类似 `host`, `port`, `qq` 之类的字段, 也是可以的:
 
 ``` python
-Session(host="localhost", port="8080", authKey=authKey, qq=qq)
+Mirai(host="localhost", port="8080", authKey=authKey, qq=qq)
 ```
 
-无论如何, 在实例中, 我们都使用了 `async with` 语法启动了 `Session` 内部的相关机制, 
-同时你的程序接收到了一个返回值, 这个返回值即是 `Session` 对象本身.
+无论如何, 在实例中,
+我们最后都使用了 `Mirai.run` 方法启动了 `Application` 内部的相关机制,
+使一切开始运作起来.
 
 到底发生了什么?
 ::: details
-我们使用 异步上下文(`async context manager`) 机制自动向无头客户端 `mirai-http-api` 发起请求, 并完成以下几件事:
- - 向无头客户端发起认证, 获取并记录 `sessionKey`
- - 发起一次 `verify` 请求, 绑定机器人的 qq
- - 启动 短轮询/事务运行 线程, 用于从无头服务器端获取事件并传递事件到 `event_runner`.
+当执行方法 `Mirai.run` 时:
+ - 我们向无头客户端发起认证, 获取并记录 `sessionKey`;
+ - 发起一次 `verify` 请求, 绑定机器人的 qq;
+ - 开始短轮询协程, 用于从无头服务器端获取事件广播并执行事件.
 :::
 
-然后我们使用 `Session.receiver` 注册了事件 `"FriendMessage"`.
+然后我们使用 `Mirai.receiver` 注册了事件 `"GroupMessage"`.
 
-当我们的 短轮询/事务运行 线程从无头客户端获取到事件时,
-会对其下发的 `JSON` 进行序列化, 并传递到 `event_runner`, 并由其进行事务的运行.
+当我们的短轮询协程从无头客户端获取到事件时,
+会对其广播的事件进行查找, 并运行事务.
 
-于是当 `Session` 获取到事件 `"FriendMessage"` 时,
+于是当 `Application` 获取到事件 `"GroupMessage"` 时,
 `event_runner` 从已注册的事件列表内抽出 `事件运行主体(Event Body)`,
 并传入 `上下文(Context)` 运行事务.
 
@@ -150,17 +151,4 @@ Session(host="localhost", port="8080", authKey=authKey, qq=qq)
 注册事件 -> 监听事件 -> 收到事件 -> 传入上下文并运行
 ```
 
-同时, 我们还支持一定程度上的 `事件上下文(Event Context)`:
-
-``` python
-@session.receiver("FriendMessage", lambda c: c.message.sender.id == 133454534)
-async def event_friendmessage(session: Session, sender: Friend):
-    await session.sendFriendMessage(
-        sender.id,
-        [Plain(text="Hello, world!")]
-    )
-```
-
-当事件注册把一个 `Callable[[Union[MessageContext, EventContext]], bool]` 作为第二个参数传入时,
-在 `event_runner` 内会先传入 `InternalEvent.body` 执行该 `Callable`,
-并根据其返回值判断是否执行事件运行主体.
+如果你理解了这些, 那么你就可以去浏览本文档的其他部分了.

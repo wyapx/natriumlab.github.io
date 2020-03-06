@@ -5,7 +5,7 @@ module.exports = {
   themeConfig: {
     nav: [{
         text: 'Github',
-        link: "https://github.com/Chenwe-i-lin/python-mirai"
+        link: "https://github.com/NatriumLab/python-mirai"
       },
       {
         text: 'Mirai',

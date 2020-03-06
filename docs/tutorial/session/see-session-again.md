@@ -14,6 +14,11 @@
 你可以在 `mirai.protocol` 内找到 `MiraiProtocol` 的定义.
 :::
 
+::: tip
+最近推出的 `Application` 机制中, `Mirai` 其实也继承了 `MiraiProtocol`.  
+这意味着你仍然可以在 `Application` 中使用本文档中包含的各式方法.
+:::
+
 ## 消息处理
 目前, 我们支持两种消息类型的发送, 即 `FriendMessage` 和 `GroupMessage`.  
 

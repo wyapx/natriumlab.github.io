@@ -1,5 +1,10 @@
 # 使用 Session.get_tasks 方法
 
+::: tip
+本方法仅适用于旧 `Session`, 新的 `Application` 可以通过在运行方法 `Mirai.run` 时,
+传入具名形参 `loop` 以使业务在已有的事件循环内运行.
+:::
+
 默认情况下, 为了保证短轮询和 `event_runner` 的数据共享,
 我们通常在程序内部新建立一个单独的线程来执行此种操作,
 并要求您使用 `Session.joinMainThread` 方法堵塞主线程以保证程序的运行.
