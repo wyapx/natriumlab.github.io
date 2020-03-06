@@ -12,7 +12,7 @@ jobs:
 
     - name: Build
       run: |
-        npm i -g vuepress
+        sudo npm i -g vuepress
         npm install
         vuepress build docs
 
