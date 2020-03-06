@@ -13,8 +13,8 @@ jobs:
     - name: Build
       run: |
         sudo npm i -g vuepress
-        npm install
-        vuepress build docs
+        sudo npm install
+        sudo vuepress build docs
 
     - name: Deploy
       uses: peaceiris/actions-gh-pages@v3
