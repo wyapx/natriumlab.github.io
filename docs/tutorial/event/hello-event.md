@@ -5,6 +5,10 @@
 ## 什么是事件(Event)?
 事件(`Event`) 用于处理在无头客户端处广播的各式可观察事件, 并将其通过内置的事件处理机制进行分发.
 
+::: tip
+`Application` 机制完全兼容本特性.
+:::
+
 ### 通俗的说法
 事件就是我们能看到的 "xxx被禁言了", "xxx群开全群禁言了" 这样的外部发生的状态变化.
 
@@ -35,7 +39,6 @@ from mirai import (
 
 @session.receiver("MemberJoinEvent")
 async def member_join(event: MemberJoinEvent, session: Session):
-
     await session.sendGroupMessage(
         event.member.group.id,
         [

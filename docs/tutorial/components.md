@@ -6,7 +6,7 @@
 回到一开始的 `Hello, world` 实例中去, 我们会发现, 当我们发送消息时, 需要使用这样一个格式:
 
 ``` python
-await session.sendFriendMessage(
+await session.sendGroupMessage(
     sender.id,
     [Plain(text="Hello, world!")]
 )
@@ -55,7 +55,7 @@ await session.sendFriendMessage(
 我们将解释这个问题, 并说明我们的用意.
 :::
 
-我们不会创造什么 `Mirai码`, 过去没有, 现在没有, 将来也不会有.  
+我们**不会**创造什么 `Mirai码`, 过去没有, 现在没有, 将来也**不会**有.  
 出于方便和可用性考虑, 我们并不会去专门设计自己的表现特殊数据的方式,
 相反, 我们使用类似 [`JSON Schema`](https://json-schema.org/) 的方式表现数据.
 
@@ -70,6 +70,14 @@ objective = [
     Image(imageId=UUID("UIUIUIUIUIUI-UIUI-UIUI-UIUI"))
 ]
 ```
+
+::: tip
+其实我们还是创造了一种将消息组件转化为文本信息的API,
+但是这种转换是**单向**的.
+
+你可以使用 `MessageChain.toString` 方法将消息链用文本形式表示,
+同时我们也在各个组件内定义了 `toString` 方法, 用于一些判断.
+:::
 
 ## 我可以从哪里找到消息组件?
 若你只使用 `python-mirai`, 那么你可以在 `mirai.message.components` 处找到所有消息组件的定义.  
@@ -90,7 +98,7 @@ objective = [
 :::
 
 ## 基本的使用方式
-只需要实例化即可:
+只需要实例化即可, 在最新的提交中已经重写了 `__init__` 方法, 这意味着你会得到更好的开发体验:
 
 ``` python
 At(target=123456789)
@@ -142,6 +150,10 @@ async def event_gm(context):
 
 ## QQ 表情的发送方式
 我们内置了一个 `QQFaces`(`mirai.face.QQFaces`) 的字典, 你可以直接从中获取 `faceId`:
+
+::: warning
+已知的是, `QQFaces` 并不完善, 可能会在调用 `toString` 方法时引发错误, 请期待之后的更新.
+:::
 
 ``` python
 from mirai.face import QQFaces

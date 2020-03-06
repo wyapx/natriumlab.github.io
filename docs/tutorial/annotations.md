@@ -14,7 +14,7 @@
 我们使用 Annotations 特性来给事件运行主体分发上下文项, 并基于其提供了附加功能.  
 
 ::: tip
-`Application` 机制也支持使用 `Annotations` 特性, 具体的改变将在接下来讲解.
+`Application` 机制也支持使用 `Annotations` 特性, 且具体的变动将在接下来讲解.
 :::
 
 ### 基本案例

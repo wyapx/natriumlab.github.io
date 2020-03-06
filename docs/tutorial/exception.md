@@ -7,6 +7,10 @@
 为了解决这个问题, 我们引进了 `Exception Handler` 机制,
 用于处理在事件运行主体中被抛出的错误.
 
+::: tip
+`Application` 机制**不兼容**本特性, 将在之后的版本中启用.
+:::
+
 ## 基本的使用
 直接使用装饰器方法 `Session.exception_handler` 即可:
 
