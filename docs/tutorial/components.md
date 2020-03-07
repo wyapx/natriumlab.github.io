@@ -123,7 +123,7 @@ await session.sendGroupMessage(
 
 ``` python
 [
-    await Image.fromFileSystem("./image.png", "group"),
+    Image.fromFileSystem("./image.png"),
     Plain(text="这张图片发给你了!")
 ]
 ```
