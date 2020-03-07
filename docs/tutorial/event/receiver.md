@@ -16,20 +16,16 @@
 
 ## 注册事件监听
 我们都知道, 当要注册一个事件监听时, 要使用装饰器的工厂方法 `Session.receiver`,
-为注册的事件监听提供事件的基本类型, 如果需要, 还可以提供运行条件:
+为注册的事件监听提供事件的基本类型:
 
 ``` python
 @session.receiver("GroupMessage")
 async def event_gm():
     ...
-
-@session.receiver("GroupMessage", lambda i: i.message.sender.group.id == 123456789)
-async def another_event_gm():
-    ...
 ```
 
 ### 事件的多种监听方式
-是的, 你不仅可以使用字符串表达出你想监听的事件, 还可以用另外两种方式:
+你不仅可以使用字符串表达出你想监听的事件, 还可以用另外两种方式:
  - 传入事件模型, 全部的事件模型在 `mirai.event.external` 处被定义, 也可以直接从 `mirai` 下导入, 这是推荐的做法.
  - 传入一个 `Enum Value`, 这意味着你可以通过遍历一个枚举类的方式来批量注册事件监听.
 
