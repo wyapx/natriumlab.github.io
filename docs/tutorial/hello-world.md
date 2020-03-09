@@ -62,11 +62,6 @@ $ python setup.py install
 这是一段代码样例, 当有用户私聊机器人时, 会向其发送一条 `"Hello, world!"`.
 出于使任何人理解的目的, 我会带着你一一解析我们提供的 API .
 
-::: warning
-由于[客观原因](https://github.com/mamoe/mirai/issues/108), 导致目前 `FriendMessage` 的事件监听无法使用...  
-我们会尽力给出解决方案, 暂时的, 我们将只能使用 `GroupMessage`.
-:::
-
 ::: tip
 由于本文档更新时, `python-mirai` 已经发布了 `0.2.1`,
 故我们将转为介绍 `Application`, 同时 `Session` 将作为 `addForeverTarget` 的备选方案.
