@@ -89,11 +89,10 @@ from environment import (
 app = Mirai(f"mirai://{mirai_api_http_locate}/?authKey={authKey}&qq={qq}")
 
 @app.receiver("GroupMessage")
-async def event_gm(app: Mirai, message: MessageChain, group: Group):
-    if message.toString().startswith("/image"):
-        await app.sendGroupMessage(group, [
-            Plain(text="Hello, world!")
-        ])
+async def event_gm(app: Mirai, group: Group):
+    await app.sendGroupMessage(group, [
+        Plain(text="Hello, world!")
+    ])
 
 if __name__ == "__main__":
     app.run()
