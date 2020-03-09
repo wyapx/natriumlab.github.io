@@ -13,7 +13,7 @@ module.exports = {
       },
       {
         text: "PyPI",
-        link: "https://pypi.org/projects/kuriyama"
+        link: "https://pypi.org/project/kuriyama"
       }
     ],
     sidebar: [
