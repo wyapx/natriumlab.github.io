@@ -49,6 +49,7 @@ module.exports = {
               ["/tutorial/dependencies/class-closure-as-depend", "定制化需求"]
             ]
           },
+          ["/tutorial/subroutine", "协处理器"],
           ['/tutorial/middleware', "中间件"]
         ]
       }
