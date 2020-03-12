@@ -6,15 +6,16 @@
 回到一开始的 `Hello, world` 实例中去, 我们会发现, 当我们发送消息时, 需要使用这样一个格式:
 
 ``` python
+from mirai import Plain,Member
 await session.sendGroupMessage(
-    sender.id,
+    member.id,
     [Plain(text="Hello, world!")]
 )
 ```
 
 注意第三行, 我们使用一个字符串 `"Hello, world!"` 作为具名实参 `text` 传入到了 `Plain` 中,
 并实例化了一个 `List[Plain]` 对象.  
-而当我们发出任意私聊消息时, 机器人会发出 `"Hello, world!"` 的消息.  
+而当我们发出任意群聊消息时, 机器人会发出 `"Hello, world!"` 的消息.  
 如果我们将其改为这样:
 
 ```python
@@ -109,10 +110,11 @@ Plain(text="?")
 在发送消息时, 我们推荐使用列表的形式组合消息组件:
 
 ``` python
+from mirai import Member
 await session.sendGroupMessage(
-    sender.group.id,
+    group.id,
     [
-        At(target=sender.id),
+        At(target=member.id),
         Plain(text="!")
     ]
 )
@@ -122,6 +124,7 @@ await session.sendGroupMessage(
 我们强烈建议你使用 `Image.fromFileSystem` 工厂方法来上传本地图片:
 
 ``` python
+from mirai import Image #使用前导入
 [
     Image.fromFileSystem("./image.png"),
     Plain(text="这张图片发给你了!")
