@@ -31,7 +31,7 @@ module.exports = {
           },
           ["/tutorial/hello-world", "Hello, world!"],
           ["/tutorial/components", "认识消息组件"],
-          ["/tutorial/annotations", "通过 类型注解(Annotations) 获取信息"],
+          ["/tutorial/annotations", "类型注解(Annotations)"],
           {
             title: "事件",
             children: [
