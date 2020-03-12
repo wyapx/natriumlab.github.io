@@ -2,20 +2,15 @@
 
 [[toc]]
 
-由于 `event_runner` 是运行在多线程中的, 所以当事件运行主体抛出错误时,
-主线程无法在终端打印出 `traceback` 信息.  
+有时候, 业务代码会出现开发时未发现的错误, 运行时可能会有安全方面的风险.  
 为了解决这个问题, 我们引进了 `Exception Handler` 机制,
 用于处理在事件运行主体中被抛出的错误.
 
-::: tip
-`Application` 机制**不兼容**本特性, 将在之后的版本中启用.
-:::
-
 ## 基本的使用
-直接使用装饰器方法 `Session.exception_handler` 即可:
+直接使用装饰器方法 `Mirai.exception_handler` 即可:
 
 ``` python
-@session.exception_handler()
+@app.exception_handler()
 async def exception_handler_normal(context):
     debug(context) # 调用了库 devtools 中的 debug 函数, 可以美观的在控制台输出 Pydantic 模型.
 ```
@@ -24,27 +19,14 @@ async def exception_handler_normal(context):
 将特定的错误类传入装饰器方法的第一个参数即可:
 
 ``` python
-@session.exception_handler(ValueError)
-@session.exception_handler(KeyError)
-async def exception_handler_normal(context):
-    debug(context)
-```
-
-### 上下文支持
-将 lambda 表达式传入具名形参 `addon_condition`, 或者第二个参数即可:
-
-``` python
-@session.exception_handler(ValueError)
-@session.exception_handler(
-    addon_condition=\
-        lambda c: c.event.message.messageChain.toString().startswith("/")
-)
+@app.exception_handler(ValueError)
+@app.exception_handler(KeyError)
 async def exception_handler_normal(context):
     debug(context)
 ```
 
 ## 原理解析
-`Session.event_runner` 会捕获你传入的上下文控制函数和事件运行主体的错误,
+`Mirai.event_runner` 会捕获你传入的上下文控制函数和事件运行主体的错误,
 并在捕获到错误时向程序内部广播一个 `UnexceptedException` 事件.  
-而 `Session.exception_handler` 则是一个 `Session.receiver` 的封装,
+而 `Mirai.exception_handler` 则是一个 `Mirai.receiver` 的封装,
 提供了更加友好的接口以供调用.
