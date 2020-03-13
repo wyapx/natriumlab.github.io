@@ -6,10 +6,6 @@
 事件接收器用于接收来自无头客户端的事件, 聚合当前处理的事件信息, 并封装为上下文以供事件运行主体调用
 
 ::: tip
-`Application` 机制完全兼容本特性.
-:::
-
-::: tip
 此处为高级特性, 若你还没学会之前叙述的各式用法,
 建议你跳过此节, 之后再来学习
 :::
@@ -19,7 +15,7 @@
 为注册的事件监听提供事件的基本类型:
 
 ``` python
-@session.receiver("GroupMessage")
+@app.receiver("GroupMessage")
 async def event_gm():
     ...
 ```

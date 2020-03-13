@@ -40,23 +40,17 @@ module.exports = {
             ]
           },
           ["/tutorial/exception.md", "错误处理"],
-          ["/tutorial/session/see-session-again", "又见 Session"],
+          ["/tutorial/application/see-application-again", "又见 Application"],
           {
             title: "依赖注入",
             children: [
               ["/tutorial/dependencies/", "初识依赖注入"],
-              ["/tutorial/dependencies/dependencies-in-receiver", "不受参依赖项"],
+              ["/tutorial/dependencies/dependencies-in-receiver", "在注册事件时声明依赖注入"],
               ["/tutorial/dependencies/class-closure-as-depend", "定制化需求"]
             ]
           },
+          ["/tutorial/subroutine", "协处理器"],
           ['/tutorial/middleware', "中间件"]
-        ]
-      },
-      {
-        title: "进阶",
-        collapsable: false,
-        children: [
-          ['/advanced/use-get_tasks', '使用 Session.get_tasks']
         ]
       }
     ]

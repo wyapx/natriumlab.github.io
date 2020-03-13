@@ -88,11 +88,15 @@ async def event_gm(app: Mirai, group: Group):
 
 if __name__ == "__main__":
     app.run()
-
 ```
 
 ::: warning
 强烈建议你开一个测试机器人专用的群组, 否则你的机器人很可能会被其他人仇视!
+
+在目前的版本中, `mirai-api-http` 无法通过 http 轮询的方式获取信息,
+请使用 `WebSocket` 方式, 只需要在 url 中使用 `/ws` 代替之前的 `/` 即可.
+
+如果不使用 url 方式, 则将 `websocket` 设为 `True`.
 :::
 
 运行这段代码, 在某个群随便说一句话, 你的机器人就会发送一条消息:
@@ -108,14 +112,14 @@ if __name__ == "__main__":
 
 首先, 我们从定义了 `app` 的那行开始解析.
 ``` python
-Mirai(f"mirai://localhost:8080/?authKey={authKey}&qq={qq}")
+Mirai(f"mirai://localhost:8080/ws?authKey={authKey}&qq={qq}")
 ```
 
 你可以很清晰的看出, 我们使用了一个 URL 实例化了一个 `Mirai` 对象, 这是推荐的做法.  
 如果你需要传入具名参数, 需要使用类似 `host`, `port`, `qq` 之类的字段, 也是可以的:
 
 ``` python
-Mirai(host="localhost", port="8080", authKey=authKey, qq=qq)
+Mirai(host="localhost", port="8080", authKey=authKey, qq=qq, websocket=True)
 ```
 
 无论如何, 在实例中,
@@ -127,7 +131,7 @@ Mirai(host="localhost", port="8080", authKey=authKey, qq=qq)
 当执行方法 `Mirai.run` 时:
  - 我们向无头客户端发起认证, 获取并记录 `sessionKey`;
  - 发起一次 `verify` 请求, 绑定机器人的 qq;
- - 开始短轮询协程, 用于从无头服务器端获取事件广播并执行事件.
+ - 开始信息/事件获取协程, 用于从无头服务器端获取事件广播并执行事件.
 :::
 
 然后我们使用 `Mirai.receiver` 注册了事件 `"GroupMessage"`.

@@ -6,9 +6,10 @@
 回到一开始的 `Hello, world` 实例中去, 我们会发现, 当我们发送消息时, 需要使用这样一个格式:
 
 ``` python
-from mirai import Plain,Member
+from mirai import Plain, Member
+...
 await session.sendGroupMessage(
-    member.id,
+    group.id,
     [Plain(text="Hello, world!")]
 )
 ```
@@ -81,19 +82,19 @@ objective = [
 :::
 
 ## 我可以从哪里找到消息组件?
-若你只使用 `python-mirai`, 那么你可以在 `mirai.message.components` 处找到所有消息组件的定义.  
+若你只使用 `python-mirai`, 那么你可以在 `mirai.event.message.components` 处找到所有消息组件的定义.  
 
 ::: details
 我们支持的可发出的消息组件:
- - `At`(`mirai.message.components.At`): At某人
+ - `At`(`mirai.event.message.components.At`): At某人
      - `target: int`
         - 你要 at 的人
- - `AtAll`(`mirai.message.components.AtAll`): At全体成员, 若你的机器人无相关权限, 抛出 `ValueError`.
- - `Plain`(`mirai.message.components.AtAll`): 文本消息.
+ - `AtAll`(`mirai.event.message.components.AtAll`): At全体成员, 若你的机器人无相关权限, 抛出 `ValueError`.
+ - `Plain`(`mirai.event.event.message.components.AtAll`): 文本消息.
      - `text: str` 
         - 将被发出的文本, 支持所有使用 `Unicode` 的字符串.
- - `Image`(`mirai.message.components.Image`): 图片, 有着特殊的使用方式, 将在之后重点讲到.
- - `Face`(`mirai.message.components.Face`): QQ表情, 有着特殊的使用方式, 将在之后重点讲到.
+ - `Image`(`mirai.event.message.components.Image`): 图片, 有着特殊的使用方式, 将在之后重点讲到.
+ - `Face`(`mirai.event.message.components.Face`): QQ表情, 有着特殊的使用方式, 将在之后重点讲到.
      - `faceId: int`
         - 表情的 ID, 会在之后讲到如何传值.
 :::
@@ -102,8 +103,10 @@ objective = [
 只需要实例化即可, 在最新的提交中已经重写了 `__init__` 方法, 这意味着你会得到更好的开发体验:
 
 ``` python
+from mirai import At, AtAll, Plain
+
 At(target=123456789)
-AtAll()
+AtAll() # 需要有特定权限.
 Plain(text="?")
 ```
 
@@ -124,35 +127,35 @@ await session.sendGroupMessage(
 我们强烈建议你使用 `Image.fromFileSystem` 工厂方法来上传本地图片:
 
 ``` python
-from mirai import Image #使用前导入
+from mirai import Image, Plain #使用前导入
+
 [
     Image.fromFileSystem("./image.png"),
     Plain(text="这张图片发给你了!")
 ]
 ```
 
-此外, 你可以直接使用 `context.message.messageChain` 对象的
+此外, 你可以直接使用 `MessageChain` 对象的
 `getFirstComponent` 方法获取消息中的第一张图片, 也可以使用
 `getAllofComponent` 方法获取消息中的所有图片:
 
 ``` python
-async def event_gm(context):
+from typing import List
+from mirai import MessageChain, Image
+
+async def event_gm(msg: MessageChain):
     # 获取消息中的第一张图片
-    a_image: Image = context.message.messageChain.getFirstComponent(Image)
+    a_image: Image = msg.getFirstComponent(Image)
 
     # 获取消息中所有图片
     all_images: List[Image] = \
-        context.message.messageChain.getAllofComponent(Image)
+        msg.getAllofComponent(Image)
 ```
 
 你可以直接发送其中的 `Image` 对象, 大多数情况都会如预期中运转.
 
 ## QQ 表情的发送方式
 我们内置了一个 `QQFaces`(`mirai.face.QQFaces`) 的字典, 你可以直接从中获取 `faceId`:
-
-::: warning
-已知的是, `QQFaces` 并不完善, 可能会在调用 `toString` 方法时引发错误, 请期待之后的更新.
-:::
 
 ``` python
 from mirai.face import QQFaces
