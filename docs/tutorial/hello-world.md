@@ -12,8 +12,9 @@
 会有一个 `setting.yml` 文件, 文件内容可能如下:
 
 ``` yml
-APIKey: fafvasdfe4aht7iuklu
+authKey: AAAAAAAA
 port: 8080
+enableWebsocket: true #ws模式开关
 ```
 
 将字段 `APIKey` 和 `port` 的值记下, 然后下一步.
@@ -63,7 +64,7 @@ $ python setup.py install
 出于使任何人理解的目的, 我会带着你一一解析我们提供的 API .
 
 ::: tip
-由于本文档更新时, `python-mirai` 已经发布了 `0.2.1`,
+由于本文档更新时, `python-mirai` 已经发布了 `0.2.10`,
 故我们将转为介绍 `Application`, 同时 `Session` 将作为 `addForeverTarget` 的备选方案.
 :::
 
@@ -73,15 +74,11 @@ $ python setup.py install
 from mirai import Mirai, Plain, MessageChain, Group
 import asyncio
 
-from environment import (
-    qq, # 字段 qq 的值
-    authKey, # 字段 authKey 的值
-    mirai_api_http_locate # = f"{httpapi所在主机的IP, 需有效!}:{字段 port 的值}"
-)
-# 上面是把我们之前记住的各种信息导入到程序中来, 属于伪代码,
-# 请不要在真实环境中填入!!!!!!
+qq = 123456 # 字段 qq 的值
+authKey = 'abcdefg' # 字段 authKey 的值
+mirai_api_http_locate = 'localhost:8080/' # httpapi所在主机的地址端口,如果 setting.yml 文件里字段 "enableWebsocket" 的值为 "true" 则需要将 "/" 换成 "/ws", 否则将接收不到消息.
 
-app = Mirai(f"mirai://{mirai_api_http_locate}/ws?authKey={authKey}&qq={qq}")
+app = Mirai(f"mirai://{mirai_api_http_locate}?authKey={authKey}&qq={qq}")
 
 @app.receiver("GroupMessage")
 async def event_gm(app: Mirai, group: Group):
