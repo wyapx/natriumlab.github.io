@@ -6,9 +6,10 @@
 回到一开始的 `Hello, world` 实例中去, 我们会发现, 当我们发送消息时, 需要使用这样一个格式:
 
 ``` python
-from mirai import Plain, Member
+from mirai import mirai, Plain, Member
+app = Mirai(......)
 ...
-await session.sendGroupMessage(
+await app.sendGroupMessage(
     group.id,
     [Plain(text="Hello, world!")]
 )
@@ -113,8 +114,9 @@ Plain(text="?")
 在发送消息时, 我们推荐使用列表的形式组合消息组件:
 
 ``` python
-from mirai import Member
-await session.sendGroupMessage(
+from mirai import mirai, Member
+app = Mirai(......)
+await app.sendGroupMessage(
     group.id,
     [
         At(target=member.id),
@@ -143,9 +145,9 @@ from mirai import Image, Plain #使用前导入
 from typing import List
 from mirai import MessageChain, Image
 
-async def event_gm(msg: MessageChain):
+async def event_gm(message: MessageChain):
     # 获取消息中的第一张图片
-    a_image: Image = msg.getFirstComponent(Image)
+    a_image: Image = message.getFirstComponent(Image)
 
     # 获取消息中所有图片
     all_images: List[Image] = \

@@ -20,17 +20,17 @@
 ### 基本案例
 ``` python
 from mirai import (
-    Session, Group, Member, Friend,
+    Mirai, Group, Member, Friend,
     GroupMessage, FriendMessage
 )
-
+app = Mirai(......)
 ...
-@session.receiver(GroupMessage)
-async def GMHandler(session: Session, group: Group, member: Member, message: GroupMessage):
+@app.receiver(GroupMessage)
+async def GMHandler(app: Mirai, group: Group, member: Member, message: GroupMessage):
     pass
 
-@session.receiver(FriendMessage)
-async def FMHandler(session: Session, friend: Friend, message: FriendMessage):
+@app.receiver(FriendMessage)
+async def FMHandler(app: Mirai, friend: Friend, message: FriendMessage):
     pass
 ...
 
