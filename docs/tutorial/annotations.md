@@ -29,7 +29,7 @@ app = Mirai(......)
 async def GMHandler(app: Mirai, group: Group, member: Member, message: GroupMessage):
     pass
 
-@qpp.receiver(FriendMessage)
+@app.receiver(FriendMessage)
 async def FMHandler(app: Mirai, friend: Friend, message: FriendMessage):
     pass
 ...
