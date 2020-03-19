@@ -98,6 +98,9 @@ objective = [
  - `Face`(`mirai.event.message.components.Face`): QQ表情, 有着特殊的使用方式, 将在之后重点讲到.
      - `faceId: int`
         - 表情的 ID, 会在之后讲到如何传值.
+ - `XmlMessage`(`mirai.event.message.components.XmlMessage`): xml消息.
+      - `XML: str`
+         - 将要发出的xml.
 :::
 
 ## 基本的使用方式
