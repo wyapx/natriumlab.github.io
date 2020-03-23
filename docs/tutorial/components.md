@@ -99,8 +99,8 @@ objective = [
      - `faceId: int`
         - 表情的 ID, 会在之后讲到如何传值.
  - `XmlMessage`(`mirai.XmlMessage` or `mirai.event.message.components.Xml`): xml 消息.
-      - `XML: str`
-         - 将要发出的xml.
+     - `XML: str`
+        - 将要发出的xml.
 ::: 
 
 ## 基本的使用方式
