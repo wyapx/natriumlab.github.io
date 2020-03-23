@@ -98,7 +98,10 @@ objective = [
  - `Face`(`mirai.event.message.components.Face`): QQ表情, 有着特殊的使用方式, 将在之后重点讲到.
      - `faceId: int`
         - 表情的 ID, 会在之后讲到如何传值.
-:::
+ - `XmlMessage`(`mirai.XmlMessage` or `mirai.event.message.components.Xml`): xml 消息.
+      - `XML: str`
+         - 将要发出的xml.
+::: 
 
 ## 基本的使用方式
 只需要实例化即可, 在最新的提交中已经重写了 `__init__` 方法, 这意味着你会得到更好的开发体验:
