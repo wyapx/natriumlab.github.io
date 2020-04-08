@@ -17,7 +17,7 @@
 :::
 
 ## 如何监听事件
-与之前使用的类似 `"FriendMessage"` 一样, 你只需要将事件的名称传入 `Session.receiver` 即可监听事件.  
+与之前使用的类似 `"FriendMessage"` 一样, 你只需要将事件的名称传入 `Mirai.receiver` 即可监听事件.  
 事件的列表可以在[这里](https://github.com/mamoe/mirai-api-http/blob/master/EventType.md)看到.
 
 当事件被传达时, `event_runner` 会实例化一个 `EventContextBody`(`mirai.prototypes.context.EventContextBody`)
