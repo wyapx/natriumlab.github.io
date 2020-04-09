@@ -39,6 +39,7 @@ $ sudo pip install kuriyama
 但这并不包含其他未被使用的特性.
 
 从该途径安装, 需要你先安装好 `git`, `setuptools`.
+
 ```bash
 $ git clone https://github.com/Chenwe-i-lin/python-mirai
 $ cd python-mirai
@@ -71,7 +72,7 @@ $ python setup.py install
 
 首先, 给出一段 `Hello, world!` 代码:
 ``` python
-from mirai import Mirai, Plain, MessageChain, Group
+from mirai import Mirai, Plain, MessageChain, Friend
 import asyncio
 
 qq = 123456 # 字段 qq 的值
@@ -80,9 +81,9 @@ mirai_api_http_locate = 'localhost:8080/' # httpapi所在主机的地址端口,�
 
 app = Mirai(f"mirai://{mirai_api_http_locate}?authKey={authKey}&qq={qq}")
 
-@app.receiver("GroupMessage")
-async def event_gm(app: Mirai, group: Group):
-    await app.sendGroupMessage(group, [
+@app.receiver("FriendMessage")
+async def event_gm(app: Mirai, friend: Friend):
+    await app.sendFriendMessage(friend, [
         Plain(text="Hello, world!")
     ])
 
@@ -91,12 +92,20 @@ if __name__ == "__main__":
 ```
 
 ::: warning
-强烈建议你开一个测试机器人专用的群组, 否则你的机器人很可能会被其他人仇视!
+若你执意在群组里测试,
+强烈建议你开一个测试机器人专用的群组, 否则你和你的机器人很可能会被其他人仇视!
 
-在目前的版本中, `mirai-api-http` 无法通过 http 轮询的方式获取信息,
-请使用 `WebSocket` 方式, 只需要在 url 中使用 `/ws` 代替之前的 `/` 即可.
+在目前的版本中, 当在全局配置文件内设置使用 `ws` 模式时,
+`mirai-api-http` 无法通过 http 轮询的方式获取信息,
+虽然 `python-mirai` 支持自动切换事件广播模式, 但还是建议使用 `WebSocket` 方式,
+只需要在 url 中使用 `/ws` 代替之前的 `/` 即可.
 
-如果不使用 url 方式, 则将 `websocket` 设为 `True`.
+如果不使用 url 方式, 则将具名参数 `websocket` 设为 `True`:
+
+``` python
+app = Mirai(..., websocket=True)
+```
+
 :::
 
 运行这段代码, 在某个群随便说一句话, 你的机器人就会发送一条消息:
@@ -136,8 +145,8 @@ Mirai(host="localhost", port="8080", authKey=authKey, qq=qq, websocket=True)
 
 然后我们使用 `Mirai.receiver` 注册了事件 `"GroupMessage"`.
 
-当我们的短轮询协程从无头客户端获取到事件时,
-会对其广播的事件进行查找, 并运行事务.
+于是, 当我们从无头客户端获取到事件时,
+会对其广播的事件进行处理, 并运行事务.
 
 于是当 `Application` 获取到事件 `"GroupMessage"` 时,
 `event_runner` 从已注册的事件列表内抽出 `事件运行主体(Event Body)`,
