@@ -70,7 +70,7 @@ string = "[At::target=123456789] [Image::\{UIUIUIUIUIUI-UIUI-UIUI-UIUI\}.jpg]"
 
 objective = [
     At(target=123456789),
-    Image(imageId=UUID("UIUIUIUIUIUI-UIUI-UIUI-UIUI"))
+    Image(imageId="UIUIUIUIUIUI-UIUI-UIUI-UIUI")
 ]
 ```
 
