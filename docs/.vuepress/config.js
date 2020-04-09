@@ -50,7 +50,8 @@ module.exports = {
             ]
           },
           ["/tutorial/subroutine", "协处理器"],
-          ['/tutorial/middleware', "中间件"]
+          ['/tutorial/middleware', "中间件"],
+          ['/tutorial/on_stage', "生命周期机制"]
         ]
       }
     ]
