@@ -37,6 +37,7 @@ module.exports = {
             children: [
               ["/tutorial/event/hello-event", "初识事件"],
               ["/tutorial/event/receiver", "事件接收器"],
+              ["/tutorial/event/event_type.md", "事件类型一览"],
             ]
           },
           ["/tutorial/exception.md", "错误处理"],
